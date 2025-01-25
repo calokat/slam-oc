@@ -13,7 +13,7 @@ func _init(file_name = "res://tools/c3d-processor/salsa.bin") -> void:
 	var file = FileAccess.open(file_name, FileAccess.READ)
 	
 	self.contents = file.get_buffer(file.get_length())
-	self.total_frames = self.contents.decode_u32(0)
+	self.total_frames = self.contents.decode_s32(0)
 	self.total_nodes = self.contents.decode_s32(4)
 	self.vector_size = self.contents.decode_s32(8)
 	
