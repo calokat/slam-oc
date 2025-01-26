@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://k8ri251ibfoa"]
 
+[ext_resource type="Script" path="res://mocap_animate.gd" id="1_5tsrn"]
 [ext_resource type="ArrayMesh" uid="uid://dr7rfxkge3qhk" path="res://boid.obj" id="1_vp0mk"]
-[ext_resource type="Script" path="res://orienter.gd" id="2_oblje"]
 
 [node name="Node3D" type="Node3D"]
 
@@ -9,10 +9,9 @@
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 13.5831)
 
 [node name="Node3D" type="Node3D" parent="."]
-script = ExtResource("2_oblje")
+script = ExtResource("1_5tsrn")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 mesh = ExtResource("1_vp0mk")
 skeleton = NodePath("../..")
 
