@@ -9,6 +9,13 @@ var node_size: int
 var frame_size: int
 var current_frame: int
 
+func _find_nonzero_direction():
+	for n in self.total_nodes:
+		var dir = get_direction(n);
+		if Vector2(dir.x, dir.y).length() > 0.0:
+			print(n)
+			print(get_direction(n))
+
 func _init(file_name = "res://tools/c3d-processor/salsa.bin") -> void:
 	var file = FileAccess.open(file_name, FileAccess.READ)
 	
@@ -22,6 +29,8 @@ func _init(file_name = "res://tools/c3d-processor/salsa.bin") -> void:
 	self.frame_size = self.node_size * self.total_nodes
 	
 	self.current_frame = 0
+	
+	_find_nonzero_direction()
 
 # Iterates the mocap object to the next frame, if
 # it reaches the end, the current_frame is set to 0
