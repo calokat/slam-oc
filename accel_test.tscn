@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://oueytvbxo4uu"]
+[gd_scene load_steps=3 format=3 uid="uid://gtqnix5d4gqh"]
 
 [ext_resource type="Script" path="res://mover.gd" id="1_fta83"]
 [ext_resource type="Script" path="res://accelerometer.gd" id="1_ucnh8"]

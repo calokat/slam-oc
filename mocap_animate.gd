@@ -59,6 +59,6 @@ func _process(delta: float) -> void:
 	elapsed = 0
 	
 	position = mocap.get_position(0) / 500
-	rotation = mocap.get_direction(0) / 500
+	rotation = mocap.get_direction_from_adj_plane(0) / 500
 	
 	mocap.next_frame()

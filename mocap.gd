@@ -72,3 +72,11 @@ func get_direction(node_index = 0) -> Vector3:
 	var phi = self.contents.decode_float(frame_offset + 16)
 	
 	return _spherical_to_unit_vector(theta, phi)
+
+func get_direction_from_adj_plane(node_index = 0) -> Vector3:
+	var current_pos = get_position(node_index)
+	var a_pos = get_position((node_index + 1) % self.total_nodes) / 500
+	var b_pos = get_position((node_index + 2) % self.total_nodes) / 500
+	var ac = current_pos - a_pos
+	var bc = current_pos - b_pos
+	return ac.cross(bc)
