@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://oueytvbxo4uu"]
+
+[ext_resource type="Script" path="res://mover.gd" id="1_fta83"]
+[ext_resource type="Script" path="res://accelerometer.gd" id="1_ucnh8"]
+
+[node name="AccelTest" type="Node3D"]
+
+[node name="Mover" type="Node3D" parent="."]
+script = ExtResource("1_fta83")
+acc = Vector3(1, 1, -1)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Mover"]
+
+[node name="Accelerometer" type="Node3D" parent="Mover"]
+script = ExtResource("1_ucnh8")
