@@ -1,15 +1,13 @@
 extends Node2D
 
 var points = []
+
 var current_pos = Vector2(0,0)
 var prev_pos = Vector2(0,0)
+var target_point_index = 0
 
-var points_buffer = []
-var buffer_start = 0
-
-var time_per_point = 1.
-var current_time = 0
-
+var timer_length = 1
+var timer = 0
 
 func quadratic_bezier_interpolate2D(start: Vector2, anchor: Vector2, end: Vector2, x: float) -> Vector2:
 	var anchor1 = lerp(start, anchor, x)
@@ -17,32 +15,36 @@ func quadratic_bezier_interpolate2D(start: Vector2, anchor: Vector2, end: Vector
 
 	return lerp(anchor1, anchor2, x)
 
-func cubic_bezier_interpolate2D(start: Vector2, anchor1: Vector2, anchor2: Vector2, end: Vector2, x: float) -> Vector2:
-	return Vector2(
-		bezier_interpolate(start.x, anchor1.x, anchor2.x, end.x, x),
-		bezier_interpolate(start.y, anchor1.y, anchor2.y, end.y, x),
-	)
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	current_time += delta
+	# setting up our timers, one to guide us to the next position
+	# and one to transition us between easing functions
+	timer += delta
 
-	if points.size() > 0:
-		var next_index = buffer_start
-		var target_index = wrap(buffer_start + 1, 0, points.size())
-		current_pos = quadratic_bezier_interpolate2D(prev_pos, points[next_index], points[target_index], current_time / time_per_point)
-
-	if current_time*2 >= time_per_point:
-		buffer_start += 1
-		current_time = 0
+	if timer*1.5 > timer_length:
+		timer = 0
+		# every tick of the timer, we set our target on a new point
+		target_point_index = wrap(target_point_index + 1, 0, points.size())
 		prev_pos = current_pos
 
-		if buffer_start >= points.size():
-			buffer_start = 0
+	if points.size() < 1:
+		return
+
+	# our current bezier curve
+	var anchor_index = wrap(target_point_index - 1, 0, points.size())
+	var after_target_index = wrap(target_point_index + 1, 0, points.size())
+
+	var main_curve_position = quadratic_bezier_interpolate2D(prev_pos, points[anchor_index], points[target_point_index], timer / timer_length)
+	var next_curve_position = quadratic_bezier_interpolate2D(current_pos, points[target_point_index], points[after_target_index], timer / timer_length)
+
+	if timer > (timer_length / 4.) && timer < (timer_length / 2.):
+		current_pos = lerp(main_curve_position, next_curve_position, (timer - (timer_length / 4.)) / (timer_length / 4.))
+
+	current_pos = main_curve_position
 
 	queue_redraw()
 
@@ -54,14 +56,13 @@ func _draw() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.pressed:
-			if event.button_index == MOUSE_BUTTON_LEFT:
-				var mouse_position = event.position
-				print("mouse clicked at ", mouse_position)
+		if event.pressed && event.button_index == MOUSE_BUTTON_LEFT:
+			var mouse_position = event.position
+			print("mouse clicked at ", mouse_position)
 
-				if points.size() == 0:
-					current_pos = mouse_position
-					prev_pos = mouse_position
+			if points.size() == 0:
+				current_pos = mouse_position
+				prev_pos = mouse_position
 
-				self.points.append(mouse_position)
-				print(self.points)
+			self.points.append(mouse_position)
+			print(self.points)
