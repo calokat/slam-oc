@@ -6,7 +6,7 @@ var current_pos = Vector2(0,0)
 var prev_pos = Vector2(0,0)
 var target_point_index = 0
 
-var timer_length = 1
+var timer_length = 0.5
 var timer = 0
 
 func quadratic_bezier_interpolate2D(start: Vector2, anchor: Vector2, end: Vector2, x: float) -> Vector2:
@@ -25,7 +25,7 @@ func _process(delta: float) -> void:
 	# and one to transition us between easing functions
 	timer += delta
 
-	if timer*1.5 > timer_length:
+	if timer*1.618 > timer_length:
 		timer = 0
 		# every tick of the timer, we set our target on a new point
 		target_point_index = wrap(target_point_index + 1, 0, points.size())
