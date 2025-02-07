@@ -1,0 +1,130 @@
+[gd_scene load_steps=18 format=3 uid="uid://b6xuf7vfog03i"]
+
+[ext_resource type="Script" path="res://mocap/mocap_full.gd" id="1_m724k"]
+[ext_resource type="ArrayMesh" uid="uid://dr7rfxkge3qhk" path="res://boid.obj" id="2_cdnqh"]
+[ext_resource type="Script" path="res://mocap/mocap_animate.gd" id="3_lv6bf"]
+[ext_resource type="Script" path="res://accelerometer.gd" id="4_def52"]
+[ext_resource type="Script" path="res://mocap/motion_visualizer.gd" id="4_u6x32"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_wuacx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ee6b"]
+albedo_color = Color(0.533333, 0.933333, 0.8, 0)
+metallic = 0.65
+roughness = 0.4
+
+[sub_resource type="SphereMesh" id="SphereMesh_yami4"]
+material = SubResource("StandardMaterial3D_4ee6b")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_56eyo"]
+albedo_color = Color(0.984314, 0.286275, 0.203922, 1)
+metallic = 0.39
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l8l0"]
+albedo_color = Color(0.235294, 0.219608, 0.211765, 1)
+roughness = 0.94
+
+[sub_resource type="BoxMesh" id="BoxMesh_btfbe"]
+size = Vector3(1000, 0.01, 1000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ievi6"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_mmxrk"]
+material = SubResource("StandardMaterial3D_ievi6")
+radius = 0.02
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8kid3"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_it608"]
+material = SubResource("StandardMaterial3D_8kid3")
+radius = 0.02
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oughi"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5ldo3"]
+material = SubResource("StandardMaterial3D_oughi")
+radius = 0.02
+height = 1.0
+
+[node name="Node3D" type="Node3D"]
+
+[node name="BoidView" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.317888, -0.135891, 0.361221, -0.00407346, 0.466772, 0.179184, -0.385915, -0.116864, 0.295656, 0.290961, 1.345, 1.65855)
+gi_mode = 0
+mesh = SubResource("QuadMesh_wuacx")
+skeleton = NodePath("../Node3D")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.353553, 0.612373, 0, 0.866026, 0.5, -0.707107, -0.353553, 0.612373, 1.61847, 1.78961, 1.73085)
+
+[node name="DirectionalLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(0.281155, 0.92307, 0.262476, -0.350656, -0.155781, 0.923457, 0.893304, -0.351674, 0.279881, 0.444151, 3.55688, 0.998585)
+light_energy = 6.513
+light_indirect_energy = 1.707
+light_volumetric_fog_energy = 1.218
+shadow_enabled = true
+
+[node name="MocapContainer" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+script = ExtResource("1_m724k")
+node_index = 27
+
+[node name="Boid" type="MeshInstance3D" parent="MocapContainer"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+mesh = ExtResource("2_cdnqh")
+skeleton = NodePath("../..")
+script = ExtResource("3_lv6bf")
+
+[node name="Accelerometer" type="Node3D" parent="MocapContainer/Boid"]
+script = ExtResource("4_def52")
+
+[node name="Sphere" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.2115, 1.9594, 0.0498505)
+mesh = SubResource("SphereMesh_yami4")
+skeleton = NodePath("")
+
+[node name="Sphere2" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, -4.37114e-07, 10, 0, -10, -4.37114e-07, -8.09476, 4.7702, -13.7054)
+mesh = SubResource("SphereMesh_yami4")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_56eyo")
+
+[node name="Plane" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plane"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0169859, 0, -0.0363731)
+material_override = SubResource("StandardMaterial3D_7l8l0")
+mesh = SubResource("BoxMesh_btfbe")
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.017
+autostart = true
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.34857, 2, 0)
+visible = false
+
+[node name="x-index" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_mmxrk")
+
+[node name="y-index" type="MeshInstance3D" parent="Node3D"]
+mesh = SubResource("CapsuleMesh_it608")
+
+[node name="z-index" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_5ldo3")
+skeleton = NodePath("../..")
+
+[node name="Node3D" type="Node3D" parent="Node3D"]
+script = ExtResource("4_u6x32")
+
+[connection signal="timeout" from="Timer" to="MocapContainer" method="_on_timer_timeout"]
+[connection signal="timeout" from="Timer" to="MocapContainer/Boid" method="_on_timer_timeout"]

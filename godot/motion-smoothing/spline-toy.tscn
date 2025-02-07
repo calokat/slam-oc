@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmdc1dqiti4js"]
+
+[ext_resource type="Script" path="res://motion-smoothing/spline-toy.gd" id="1_n70me"]
+[ext_resource type="Texture2D" uid="uid://dsp6tupg3jiql" path="res://icon.svg" id="2_m577t"]
+[ext_resource type="Script" path="res://motion-smoothing/icon.gd" id="3_4ls0q"]
+
+[node name="Spline-toy" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1157.0
+offset_bottom = 651.0
+color = Color(0.223845, 0.260851, 0.285404, 1)
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("1_n70me")
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(209, 250)
+texture = ExtResource("2_m577t")
+script = ExtResource("3_4ls0q")

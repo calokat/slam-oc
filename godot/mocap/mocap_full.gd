@@ -1,12 +1,12 @@
 extends Node
 
-var mocap = Mocap.new()
+var mocap = Mocap.new(23)
 var nodes = []
 var material = StandardMaterial3D.new()
 var selected_node = StandardMaterial3D.new()
 var time = 0
 
-@export var node_index: int = 0
+@export var node_index: int = 23
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -25,17 +25,8 @@ func _ready() -> void:
 		nodes.append(sphere)
 		add_child(sphere)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	time += delta
-	
-	if time <= 0.016:
-		return;
-		
-	time = 0
-	
+func _on_timer_timeout() -> void:
 	for i in range(nodes.size()):
-		nodes[i].position = mocap.get_position(i) / 1000
+		nodes[i].position = mocap.get_position(mocap.current_frame, i)
 	
-	mocap.next_frame()
+	mocap.next_frame(node_index)
